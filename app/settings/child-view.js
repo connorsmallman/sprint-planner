@@ -16,6 +16,9 @@ export default Marionette.ItemView.extend({
 		},
 		'focus select': 'setPreviousValue'
 	},
+	onRender() {
+		this.setCurrentValue();
+	},
 	setPreviousValue() {
 		this.model.set('previousValue', this.$('select').val());
 	},

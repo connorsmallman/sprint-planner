@@ -14,7 +14,6 @@ app.get('/api/settings', function (req, res) {
   var settings = [
   	{
   		name: 'Number of weeks',
-  		method: 'numberOfWeeks',
   		options: [
   			{
   				value: 1,
@@ -36,7 +35,6 @@ app.get('/api/settings', function (req, res) {
   	},
   	{
   		name: 'Number of work days',
-  		method: 'workDays',
   		options: [
   			{
   				name: '4',
