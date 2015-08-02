@@ -3,31 +3,29 @@
 import Marionette from 'backbone.marionette';
 import Backbone from 'backbone';
 import LayoutView from './layout-view';
-import SettingsView from './settings/view';
-import SettingsModel from './settings/model';
+import SettingsView from './settings/collection-view';
+import SettingsCollection from './settings/collection';
+import Radio from 'backbone.radio';
 
-let App = Marionette.Application.extend({
+const settingsChannel = Radio.channel('setting');
+
+const App = Marionette.Application.extend({
+	initialize() {
+		this.listenTo(settingsChannel, 'option:changed', this.updateView);
+	},
 	onStart() {
 		this.layoutView = new LayoutView();
 		this.layoutView.render();
 
-		const options = [
-			{
-				name: 'hello',
-				value: 'hello'
-			},
-			{
-				name: 'world',
-				value: 'world'
-			}
-		];
+		let collection = new SettingsCollection();
 
-		const settingsModel = new SettingsModel({options: options});
-
-		this.layoutView.getRegion('settings').show(new SettingsView({model: settingsModel}));
+		this.layoutView.getRegion('settings').show(new SettingsView({collection: collection}));
+	},
+	updateView(setting) {
+		console.log(setting);
 	}
 });
 
-let app = new App();
+const app = new App();
 
 app.start();
