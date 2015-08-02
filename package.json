@@ -1,0 +1,23 @@
+{
+  "name": "sprint-planner",
+  "version": "0.0.1",
+  "description": "Sprint Planner ",
+  "main": "server.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/connorsmallman/sprint-planner.git"
+  },
+  "keywords": [
+    "sprint",
+    "planner"
+  ],
+  "author": "Connor Smallman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/connorsmallman/sprint-planner/issues"
+  },
+  "homepage": "https://github.com/connorsmallman/sprint-planner#readme"
+}
