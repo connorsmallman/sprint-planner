@@ -60,9 +60,11 @@ app.get('/api/settings', function (req, res) {
   		options: days.map(function(day) {
   			return {
   				name: day.name,
-  				value: day.name.toLowerCase()
+  				value: day.name.toLowerCase(),
+  				selected: (day.name === 'Monday') ? true : false
   			}
-  		})
+  		}),
+  		selected: 'Monday'
   	},
   	{
   		name: 'End day',
@@ -70,9 +72,10 @@ app.get('/api/settings', function (req, res) {
   		options: days.map(function(day) {
   			return {
   				name: day.name,
-  				value: day.name.toLowerCase()
+  				value: day.name.toLowerCase(),
+  				selected: (day.name === 'Friday') ? true : false
   			}
-  		})
+  		}),
   	}
   ]
 

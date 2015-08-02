@@ -1,6 +1,6 @@
 {{name}}
 <select class="select">
 	{{#each options}}
-		<option value="{{this.value}}">{{this.name}}</option>
+		<option {{#if this.selected }} selected="selected" {{/if}} value="{{this.value}}">{{this.name}}</option>
 	{{/each}}
 </select>

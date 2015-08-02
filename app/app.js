@@ -28,7 +28,7 @@ const App = Marionette.Application.extend({
 		this.layoutView.getRegion('settings').show(new SettingsView({collection: settingsCollection}));
 		this.layoutView.getRegion('calendar').show(new CalenderView({collection: calendarCollection}));
 
-		this.listenTo(settingsCollection, 'sync', this.createCalendar);	
+		this.listenTo(settingsCollection, 'sync', this.createCalendar);
 	},
 	updateView(setting) {
 		console.log(setting);
@@ -46,6 +46,9 @@ const App = Marionette.Application.extend({
 		}
 
 		function createWeek(start, end, workDays){
+
+			//need to remove non work days.
+
 			const dayNames = days.map((day) => {
 				return day.name.toLowerCase();
 			});
@@ -54,12 +57,11 @@ const App = Marionette.Application.extend({
 			const endDayIndex = dayNames.indexOf(end);
 
 			if (endDayIndex > startDayIndex) {
-				return days.slice(startDayIndex, endDayIndex);
+				const week = days.slice(startDayIndex, (endDayIndex + 1));
 			} else {
-				const head = days.slice(0, endDayIndex);
-				const tail = days.slice(startDayIndex, days.length);
-
-				return head.push(tail);
+				const tail = days.slice(0, endDayIndex);
+				const head = days.slice(startDayIndex, (days.length + 1));
+				const week = head.push(tail);
 			}
 		}
 
