@@ -4,7 +4,7 @@ import Marionette from 'backbone.marionette';
 import Backbone from 'backbone';
 import LayoutView from './layout-view';
 import SettingsView from './settings/collection-view';
-import CalenderView from './calendar/collection-view';
+import CalendarView from './calendar/collection-view';
 import SettingsCollection from './settings/collection';
 import CalendarCollection from './calendar/collection';
 import Radio from 'backbone.radio';
@@ -25,19 +25,16 @@ const App = Marionette.Application.extend({
 		const settingsCollection = new SettingsCollection();
 		const calendarCollection = new CalendarCollection();
 
-		this.layoutView.getRegion('settings').show(new SettingsView({collection: settingsCollection}));
-		this.layoutView.getRegion('calendar').show(new CalenderView({collection: calendarCollection}));
+		this.layoutView.getRegion('settings').show(new SettingsView({ collection: settingsCollection }));
+		this.layoutView.getRegion('calendar').show(new CalendarView({ collection: calendarCollection }));
 
 		this.listenTo(settingsCollection, 'sync', this.createCalendar);
-	},
-	updateView(setting) {
-		console.log(setting);
 	},
 	createCalendar() {
 		const _this = this;
 
 		function getSettings() {
-			return _this.layoutView.getRegion('settings').currentView.collection.models.map((model) => {
+			return _this.layoutView.getRegion('calendar').currentView.collection.models.map((model) => {
 				return {
 					currentValue: model.attributes.currentValue,
 					name: model.attributes.name
@@ -45,23 +42,27 @@ const App = Marionette.Application.extend({
 			});
 		}
 
-		function createWeek(start, end, workDays){
-
-			//need to remove non work days.
-
-			const dayNames = days.map((day) => {
-				return day.name.toLowerCase();
+		function createWeek(start, end, includesWeekend){
+			let weekNames = _.map(days, function(x) {
+			  return x.name.toLowerCase();
 			});
 
-			const startDayIndex = dayNames.indexOf(start);
-			const endDayIndex = dayNames.indexOf(end);
+			const startDayIndex = weekNames.indexOf('saturday');
+			const endDayIndex = weekNames.indexOf('tuesday');
 
-			if (endDayIndex > startDayIndex) {
-				const week = days.slice(startDayIndex, (endDayIndex + 1));
+			if(!includesWeekend){
+			  weekNames = _.filter(weekNames, function(s) {
+			    return s != 'sunday' && s != 'saturday';
+			  });
+			}
+
+			if(endDayIndex > startDayIndex){
+			  return days.slice(startDayIndex, endDayIndex + 1);
 			} else {
-				const tail = days.slice(0, endDayIndex);
-				const head = days.slice(startDayIndex, (days.length + 1));
-				const week = head.push(tail);
+			  const head = days.slice(startDayIndex, days.length);
+			  const tail = days.slice(0, endDayIndex + 1);
+			  
+			  return head.concat(tail);
 			}
 		}
 
@@ -90,7 +91,10 @@ const App = Marionette.Application.extend({
 			calendar[name] = settings[i].currentValue;
 		}
 
-		const week = createWeek(calendar.startDay, calendar.endDay, calendar.workDays);
+		const week = createWeek(calendar.startDay, calendar.endDay, calendar.includesWeekend);
+		const calendarCollection = new CalendarCollection(week);
+
+		//update region
 	}
 });
 

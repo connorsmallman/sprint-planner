@@ -34,23 +34,15 @@ app.get('/api/settings', function (req, res) {
   		]
   	},
   	{
-  		name: 'Number of work days',
+  		name: 'Includes weekend',
   		options: [
   			{
-  				name: '4',
-  				value: 4
+  				name: 'yes',
+  				value: true
   			},
   			{
-  				name: '5',
-  				value: 5
-  			},
-  			{
-  				name: '6',
-  				value: 6
-  			},
-  			{
-  				name: '7',
-  				value: 7
+  				name: 'no',
+  				value: false
   			}
   		]
   	},
